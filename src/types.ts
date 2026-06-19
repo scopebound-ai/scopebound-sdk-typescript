@@ -28,7 +28,7 @@ export type NodeType = 'source' | 'tool' | 'transform' | 'destination';
 
 export type ViolationSeverity = 'critical' | 'high' | 'medium' | 'low';
 
-export type EvaluationStatus = 'pass' | 'fail' | 'not_evaluated';
+export type EvaluationStatus = 'pass' | 'fail' | 'warnings' | 'not_evaluated';
 
 /**
  * A node in a canonical workflow DAG. For requests, only `id`, `type`, and

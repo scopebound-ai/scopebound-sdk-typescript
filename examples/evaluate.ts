@@ -30,16 +30,18 @@ async function main() {
   // Minimal Savant workflow with one credential reference
   const request: EvaluationRequest = {
     roleId: '747b0d54-3b89-48ab-b0d3-5f0f551630d6',
-    evaluationProfile: ['SOC1', 'PRODUCTION_READINESS'],
+    //evaluationProfile: ['SOC1', 'PRODUCTION_READINESS'],
+    evaluationProfile: ['PRODUCTION_READINESS'],
     workflow: {
       workflowId: 'sdk-example',
       nodes: [
         { id: 'source', type: 'source', tool: 'manual_trigger' },
         { id: 'fetch', type: 'tool', tool: 'parse_invoices' },
         { id: 'approve', type: 'tool', tool: 'request_approval' },
+        { id: 'audit', type: 'tool', tool: 'emit_audit_event' },
         {
           id: 'post',
-          type: 'tool',
+          type: 'destination',
           tool: 'post_to_erp',
           credentials: ['sap-prod-api'],
         },
@@ -47,7 +49,8 @@ async function main() {
       edges: [
         { from: 'source', to: 'fetch' },
         { from: 'fetch', to: 'approve' },
-        { from: 'approve', to: 'post' },
+        { from: 'approve', to: 'audit' },
+        { from: 'audit', to: 'post' },
       ],
     },
   };
