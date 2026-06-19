@@ -1,0 +1,73 @@
+{
+  "name": "@scopebound/sdk",
+  "version": "0.1.0-preview.1",
+  "description": "Official TypeScript SDK for Scopebound — runtime authorization and pre-execution scope enforcement for AI agent workflows.",
+  "license": "Apache-2.0",
+  "author": "Scopebound, Inc. <hello@scopebound.ai>",
+  "homepage": "https://scopebound.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scopebound-ai/scopebound-sdk-typescript.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scopebound-ai/scopebound-sdk-typescript/issues"
+  },
+  "keywords": [
+    "scopebound",
+    "ai-agents",
+    "policy-enforcement",
+    "compliance",
+    "soc1",
+    "soc2",
+    "hipaa",
+    "agent-authorization",
+    "workflow-security"
+  ],
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:types",
+    "build:esm": "tsc -p tsconfig.build.json --module ES2022 --outDir dist/esm",
+    "build:cjs": "tsc -p tsconfig.build.json --module CommonJS --outDir dist/cjs",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --declaration --outDir dist/types",
+    "clean": "rimraf dist",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write 'src/**/*.ts' 'test/**/*.ts' 'examples/**/*.ts'",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build",
+    "example:evaluate": "npx tsx examples/evaluate.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.0",
+    "rimraf": "^5.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0",
+    "vitest": "^4.1.9"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
