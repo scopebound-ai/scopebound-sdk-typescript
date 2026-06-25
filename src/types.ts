@@ -18,11 +18,24 @@ export type EvaluationProfile =
   | 'HIPAA';
 
 /**
- * Source formats supported by the SB-81 translator family. Use 'savant' (or
+ * Source formats supported by the SB-81 translator family. Use 'canonical' (or
  * omit entirely) for canonical workflows. 'n8n', 'make', 'zapier' invoke the
  * corresponding translator to produce the canonical DAG.
  */
-export type SourceFormat = 'savant' | 'n8n' | 'make' | 'zapier';
+/**
+ * Source formats supported by the Scopebound translator family.
+ *
+ * 'canonical' is the new name for Scopebound's native workflow shape.
+ * 'savant' is the legacy alias, retained for backwards compatibility.
+ * The server treats both identically; new code should use 'canonical'.
+ */
+export type SourceFormat =
+  | 'canonical'
+  /** @deprecated Use 'canonical' instead. Retained for backward compatibility. */
+  | 'savant'
+  | 'n8n'
+  | 'make'
+  | 'zapier';
 
 export type NodeType = 'source' | 'tool' | 'transform' | 'destination';
 

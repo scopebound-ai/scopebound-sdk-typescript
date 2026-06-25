@@ -1,6 +1,6 @@
 {
   "name": "@scopebound/sdk",
-  "version": "0.1.0-preview.1",
+  "version": "0.1.0-preview.3",
   "description": "Official TypeScript SDK for Scopebound — runtime authorization and pre-execution scope enforcement for AI agent workflows.",
   "license": "Apache-2.0",
   "author": "Scopebound, Inc. <hello@scopebound.ai>",
@@ -43,7 +43,8 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:types",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:types && npm run build:pkg-json",
+    "build:pkg-json": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json && echo '{\"type\":\"module\"}' > dist/esm/package.json",
     "build:esm": "tsc -p tsconfig.build.json --module ES2022 --outDir dist/esm",
     "build:cjs": "tsc -p tsconfig.build.json --module CommonJS --outDir dist/cjs",
     "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --declaration --outDir dist/types",
@@ -61,7 +62,7 @@
     "@typescript-eslint/parser": "^7.0.0",
     "eslint": "^8.57.0",
     "prettier": "^3.2.0",
-    "rimraf": "^5.0.0",
+    "rimraf": "^5.0.10",
     "tsx": "^4.7.0",
     "typescript": "^5.4.0",
     "vitest": "^4.1.9"

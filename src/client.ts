@@ -106,7 +106,7 @@ export class ScopeboundClient {
   /**
    * Evaluate a workflow against the specified role and compliance profiles.
    *
-   * For canonical Savant-shaped workflows, pass `workflow`. For source-native
+   * For canonical Scopebound-shaped workflows, pass `workflow`. For source-native
    * exports (n8n, Make, Zapier), pass `workflowRaw` + `sourceFormat` and the
    * server-side translator will produce the canonical DAG.
    *

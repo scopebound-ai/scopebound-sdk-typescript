@@ -27,7 +27,7 @@ async function main() {
     baseUrl: process.env.SCOPEBOUND_BASE_URL ?? 'http://localhost:8080',
   });
 
-  // Minimal Savant workflow with one credential reference
+  // Minimal canonical workflow with one credential reference
   const request: EvaluationRequest = {
     roleId: '747b0d54-3b89-48ab-b0d3-5f0f551630d6',
     //evaluationProfile: ['SOC1', 'PRODUCTION_READINESS'],
