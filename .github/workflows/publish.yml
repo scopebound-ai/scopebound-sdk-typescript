@@ -27,6 +27,6 @@ jobs:
       # Publish with provenance — establishes a verifiable link between this
       # source repo, the GitHub Action run, and the published npm artifact.
       # Visible on npmjs.com as a "Provenance" badge under the package version.
-      - run: npm publish --provenance --access public
+      - run: npm publish --provenance --access public --tag preview
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
