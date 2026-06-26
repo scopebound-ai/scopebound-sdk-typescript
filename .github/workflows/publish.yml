@@ -1,32 +1,72 @@
 name: Publish to npm
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'npm dist-tag (latest, preview, beta)'
+        required: true
+        default: 'preview'
+        type: choice
+        options:
+          - latest
+          - preview
+          - beta
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
+      # `id-token: write` is required for npm provenance via OIDC.
+      # Configure npm Trusted Publisher pointing at this workflow to use it.
       contents: read
-      id-token: write # required for npm provenance via OIDC
-
+      id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 24.x
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
 
-      - run: npm ci
-      - run: npm run build
-      - run: npm test
+      - name: Upgrade npm to latest (required for Trusted Publishing OIDC)
+        run: npm install -g npm@latest
 
-      # Publish with provenance — establishes a verifiable link between this
-      # source repo, the GitHub Action run, and the published npm artifact.
-      # Visible on npmjs.com as a "Provenance" badge under the package version.
-      - run: npm publish --provenance --access public --tag preview
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify dist/ output
+        run: |
+          set -e
+          test -f dist/cjs/index.js
+          test -f dist/cjs/index.d.ts
+          test -f dist/esm/index.js
+          test -f dist/esm/index.d.ts
+          test -f dist/types/index.d.ts
+          echo "✔ All expected build artifacts present"
+
+      - name: Determine npm tag
+        id: tag
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "tag=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.ref_name }}" == *"preview"* ]]; then
+            echo "tag=preview" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.ref_name }}" == *"beta"* ]]; then
+            echo "tag=beta" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.ref_name }}" == *"alpha"* ]]; then
+            echo "tag=alpha" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=latest" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to npm with provenance
+        run: npm publish --access public --provenance --tag ${{ steps.tag.outputs.tag }}
