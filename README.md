@@ -180,6 +180,15 @@ const client = new ScopeboundClient({
 - Retry-with-backoff policy on idempotent reads
 - Typed event emitter for client-side observability
 
+## Resources
+
+- [**Full documentation**](https://docs.scopebound.ai/sdk/typescript) — getting started, workflow formats, common patterns
+- [Scopebound documentation home](https://docs.scopebound.ai) — quickstart, framework guides
+- [API reference](https://docs.scopebound.ai/api/reference/) — raw HTTP API
+- [n8n Community Node](https://docs.scopebound.ai/sdk/n8n) — no-code wrapper around this SDK
+- [Python SDK](https://docs.scopebound.ai/sdk/python) — for Python codebases
+- [Report an issue](https://github.com/scopebound-ai/scopebound-sdk-typescript/issues)
+
 ## License
 
 Apache 2.0
